@@ -45,4 +45,11 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe "Hashing the password" do
+    it "generate password digest when given password" do
+      user = User.create user_attributes
+      expect(user.password_digest).to be
+    end
+  end
+
 end
