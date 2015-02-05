@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  def user_attributes(new_attr)
+  def user_attributes(new_attr = {})
     valid_attributes = {
       email: "bob@gmail.com",
       password: "12345678",
@@ -19,8 +19,8 @@ RSpec.describe User, type: :model do
     end
 
     it "requires a unique email" do
-      User.create user_attributes({})
-      user = User.new user_attributes({})
+      User.create user_attributes
+      user = User.new user_attributes
       expect(user).to be_invalid
     end
 
