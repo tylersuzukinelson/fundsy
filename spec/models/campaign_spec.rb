@@ -29,7 +29,7 @@ RSpec.describe Campaign, type: :model do
     end
 
     it "requires the title to be unique" do
-      campaign = Campaign.create campaign_attributes({})
+      Campaign.create campaign_attributes({})
       campaign = Campaign.new campaign_attributes({})
       expect(campaign).to be_invalid
     end  
