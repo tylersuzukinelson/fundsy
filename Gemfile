@@ -35,6 +35,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'valid_email'
 
 group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'faker'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 

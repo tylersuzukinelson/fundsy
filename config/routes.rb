@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resource :users, only: [:new]
+  resources :campaigns
+  resources :users, only: [:new, :create]
+  root "campaign#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
