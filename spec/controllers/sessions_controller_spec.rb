@@ -47,4 +47,19 @@ RSpec.describe SessionsController, type: :controller do
       end
     end
   end
+  describe "#destroy" do
+    before do
+      login(user)
+      delete :destroy
+    end
+    it "removes the session user_id variable" do
+      expect(session[:user_id]).not_to be
+    end
+    it "redirects to the home page" do
+      expect(response).to redirect_to(root_path)
+    end
+    it "sets a flash message" do
+      expect(flash[:notice]).to be
+    end
+  end
 end
