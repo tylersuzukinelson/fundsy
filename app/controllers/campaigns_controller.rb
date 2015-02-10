@@ -1,6 +1,7 @@
 class CampaignsController < ApplicationController
-
-  before_action :authenticate_user!, only: [:new]
+  before_action :authenticate_user!, only: [:new , :create, :edit, :update]
+  before_action :find_campaign, only: [:show, :destroy]
+  before_action :find_own_campaign, only: [:edit, :update]
 
   def new
     @campaign = Campaign.new
@@ -8,6 +9,7 @@ class CampaignsController < ApplicationController
 
   def create
     @campaign = Campaign.new permitted_params
+    @campaign.user = current_user
     if @campaign.save
       redirect_to @campaign
     else
@@ -17,7 +19,6 @@ class CampaignsController < ApplicationController
   end
 
   def show
-    @campaign = Campaign.find params[:id]
   end
 
   def index
@@ -25,11 +26,9 @@ class CampaignsController < ApplicationController
   end
 
   def edit
-    @campaign = Campaign.find params[:id]
   end
 
   def update
-    @campaign = Campaign.find params[:id]
     if @campaign.update permitted_params
       redirect_to @campaign
     else
@@ -39,7 +38,6 @@ class CampaignsController < ApplicationController
   end
 
   def destroy
-    @campaign = Campaign.find params[:id]
     @campaign.destroy
     redirect_to root_path, notice: "Deleted campaign"
   end
@@ -52,6 +50,14 @@ class CampaignsController < ApplicationController
 
   def error_messages
     @campaign.errors.full_messages.join("; ")
+  end
+
+  def find_campaign
+    @campaign = Campaign.find params[:id]
+  end
+
+  def find_own_campaign
+    @campaign  = current_user.campaigns.find params[:id]
   end
 
 end

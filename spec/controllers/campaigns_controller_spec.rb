@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe CampaignsController, type: :controller do
-  let(:campaign) { create(:campaign) }
-  let(:campaign_1) { create(:campaign) }
   let(:user) { create(:user) }
+  let(:campaign) { create(:campaign, user: user) }
+  let(:campaign_1) { create(:campaign) }
   describe "#new" do
     context "with user logged in" do
       before {
@@ -27,65 +27,63 @@ RSpec.describe CampaignsController, type: :controller do
   end
 
   describe "#create" do
-
-    context "valid request" do
-
-      def valid_request
-        post :create, {
-          campaign: {
-            title: "Heyy Durr",
-            description: "Loren ipsum heroku starbucks",
-            goal: 11,
-            due_date: "2019-11-11 10:33:20"
-            }
-          }  
+    context "with user logged in" do
+      before {
+        login(user)
+      }
+      context "valid request" do
+        def valid_request
+          post :create, {
+            campaign: {
+              title: "Heyy Durr",
+              description: "Loren ipsum heroku starbucks",
+              goal: 11,
+              due_date: "2019-11-11 10:33:20"
+              }
+            }  
+        end
+        it "creates a new campaign record in the database for current user" do
+          expect { valid_request }.to change { user.campaigns.count }.by(1)
+        end
+        it "redirects to campaign show page" do
+          valid_request
+          expect(response).to redirect_to(campaign_path(Campaign.last))
+        end
+        it "sets flash message" do
+          valid_request
+          expect(flash[:notice]).not_to be
+        end
       end
-
-      it "creates a new campaign record in the database" do
-        expect { valid_request }.to change { Campaign.count }.by(1)
+      context "invalid request" do
+        def invalid_request
+          post :create, {
+            campaign: {
+              title: nil,
+              description: "Loren ipsum heroku starbucks",
+              goal: 5,
+              due_date: "2019-11-11 10:33:20"
+              }
+            }   
+        end
+        it "doesn't create a record in the database" do
+          expect { invalid_request }.not_to change { Campaign.count }
+        end
+        it "sets a flash errors message" do
+          invalid_request
+          expect(flash[:notice]).to be
+        end
+        it "renders the new template" do
+          invalid_request
+          expect(response).to render_template(:new)
+        end
       end
-
-      it "redirects to campaign show page" do
-        valid_request
-        expect(response).to redirect_to(campaign_path(Campaign.last))
-      end
-
-      it "sets flash message" do
-        valid_request
-        expect(flash[:notice]).not_to be
-      end
-
     end
-
-    context "invalid request" do
-
-      def invalid_request
-        post :create, {
-          campaign: {
-            title: nil,
-            description: "Loren ipsum heroku starbucks",
-            goal: 5,
-            due_date: "2019-11-11 10:33:20"
-            }
-          }   
+    context "without user logged in" do
+      it "redirects to login page" do
+        post :create
+        expect(response).to redirect_to(new_session_path)
       end
-
-      it "doesn't create a record in the database" do
-        expect { invalid_request }.not_to change { Campaign.count }
-      end
-
-      it "sets a flash errors message" do
-        invalid_request
-        expect(flash[:notice]).to be
-      end
-
-      it "renders the new template" do
-        invalid_request
-        expect(response).to render_template(:new)
-      end
-
     end
-
   end
 
   describe "#show" do
@@ -117,73 +115,95 @@ RSpec.describe CampaignsController, type: :controller do
   end
 
   describe "#edit" do
-
-    it "renders the edit template" do
-      get :edit, id: campaign.id
-      expect(response).to render_template(:edit)
+    context "with user logged in" do
+      context "with owner logged in" do
+        before {
+          login(user)
+          get :edit, id: campaign.id
+        }
+        it "renders the edit template" do
+          expect(response).to render_template(:edit)
+        end
+        it "retrieves the campaign with passed id and stores it in an instance variable" do
+          expect(assigns(:campaign)).to eq(campaign)
+        end
+      end
+      context "with not owner logged in" do
+        it "redirects to root path" do
+          login(user)
+          expect { get :edit, id: campaign_1.id }.to raise_error
+        end
+      end
     end
-
-    it "retrieves the campaign with passed id and stores it in an instance variable" do
-      get :edit, id: campaign.id
-      expect(assigns(:campaign)).to eq(campaign)
+    context "without user logged in" do
+      it "redirects to login page" do
+        get :edit, id: campaign.id
+        expect(response).to redirect_to(new_session_path)
+      end
     end
-
   end
 
   describe "#update" do
-
-    context "with valid request" do
-
-      before do
-        patch :update, { id: campaign.id,
-          campaign: {
-            title: "Heyy Durr",
-            description: "Loren ipsum heroku starbucks",
-            goal: 11,
-            due_date: "2019-11-11 10:33:20"
-            }
-          }  
+    context "with user logged in" do
+      context "with owner logged in" do
+        before {
+          login(user)
+        }
+        context "with valid request" do
+          before do
+            patch :update, { id: campaign.id,
+              campaign: {
+                title: "Heyy Durr",
+                description: "Loren ipsum heroku starbucks",
+                goal: 11,
+                due_date: "2019-11-11 10:33:20"
+                }
+              }  
+          end
+          it "redirect to the campaign show page" do
+            expect(response).to redirect_to(campaign_path(campaign.id))
+          end
+          it "changes the title of the campaign if it's different" do
+            campaign.reload
+            expect(campaign.title).to eq("Heyy Durr")
+          end
+        end
+        context "with invalid params" do
+          before do
+            patch :update, { id: campaign.id,
+              campaign: {
+                title: "",
+                description: "Loren ipsum heroku starbucks",
+                goal: 5,
+                due_date: "2019-11-11 10:33:20"
+                }
+              }  
+          end
+          it "renders the edit page" do
+            expect(response).to render_template(:edit)
+          end
+          it "doesn't change the database" do
+            expect(campaign.reload.goal).not_to eq(5)
+            # expect(assigns(:campaign)).to eq(campaign)
+          end
+          it "sets an alert flash message" do
+            expect(flash[:alert]).to be
+          end
+        end
       end
-
-      it "redirect to the campaign show page" do
-        expect(response).to redirect_to(campaign_path(campaign.id))
+      context "with not owner logged in" do
+        it "redirects to root path" do
+          login(user)
+          expect { patch :update, id: campaign_1.id }.to raise_error
+        end
       end
-
-      it "changes the title of the campaign if it's different" do
-        campaign.reload
-        expect(campaign.title).to eq("Heyy Durr")
-      end
-
     end
-
-    context "with invalid params" do
-
-      before do
-        patch :update, { id: campaign.id,
-          campaign: {
-            title: "",
-            description: "Loren ipsum heroku starbucks",
-            goal: 5,
-            due_date: "2019-11-11 10:33:20"
-            }
-          }  
+    context "without user logged in" do
+      it "redirects to login page" do
+        patch :update, id: campaign.id
+        expect(response).to redirect_to(new_session_path)
       end
-
-      it "renders the edit page" do
-        expect(response).to render_template(:edit)
-      end
-
-      it "doesn't change the database" do
-        expect(campaign.reload.goal).not_to eq(5)
-        # expect(assigns(:campaign)).to eq(campaign)
-      end
-
-      it "sets an alert flash message" do
-        expect(flash[:alert]).to be
-      end
-
     end
-
   end
 
   describe "#destroy" do

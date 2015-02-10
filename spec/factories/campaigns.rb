@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :campaign do
+    association :user, factory: :user
     sequence(:title) { |n| "#{Faker::Company.bs}-#{n}" }
     description Faker::Lorem.paragraph
     goal 100000000

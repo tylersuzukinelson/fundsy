@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-  
   has_secure_password
+  has_many :campaigns, dependent: :destroy
+
   validates :email, presence: true, uniqueness: true, email_format: true
 
   def full_name
