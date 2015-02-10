@@ -1,23 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe CampaignsController, type: :controller do
-
   let(:campaign) { create(:campaign) }
   let(:campaign_1) { create(:campaign) }
-
+  let(:user) { create(:user) }
   describe "#new" do
-
-    it "assigns a new campaign instance variable" do
-      get :new
-      # assigns(:campaign) refers to @campaign
-      expect(assigns(:campaign)).to be_a_new(Campaign)
+    context "with user logged in" do
+      before {
+        login(user)
+        get :new
+      }
+      it "assigns a new campaign instance variable" do
+        # assigns(:campaign) refers to @campaign
+        expect(assigns(:campaign)).to be_a_new(Campaign)
+      end
+      it "renders the new template" do
+        expect(response).to render_template(:new)
+      end
     end
-
-    it "renders the new template" do
-      get :new
-      expect(response).to render_template(:new)
+    context "with user not logged in" do
+      it "redirects to login page" do
+        get :new
+        expect(response).to redirect_to(new_session_path)
+      end
     end
-
   end
 
   describe "#create" do
