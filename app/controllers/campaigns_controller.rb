@@ -1,7 +1,7 @@
 class CampaignsController < ApplicationController
-  before_action :authenticate_user!, only: [:new , :create, :edit, :update]
-  before_action :find_campaign, only: [:show, :destroy]
-  before_action :find_own_campaign, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:new , :create, :edit, :update, :destroy]
+  before_action :find_campaign, only: [:show]
+  before_action :find_own_campaign, only: [:edit, :update, :destroy]
 
   def new
     @campaign = Campaign.new

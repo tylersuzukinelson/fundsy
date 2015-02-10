@@ -192,7 +192,7 @@ RSpec.describe CampaignsController, type: :controller do
         end
       end
       context "with not owner logged in" do
-        it "redirects to root path" do
+        it "throws an error" do
           login(user)
           expect { patch :update, id: campaign_1.id }.to raise_error
         end
@@ -207,26 +207,36 @@ RSpec.describe CampaignsController, type: :controller do
   end
 
   describe "#destroy" do
-
-    let!(:campaign) { create(:campaign) }
-
+    let!(:campaign) { create(:campaign, user: user) }
     def destroy_request
       delete :destroy, id: campaign.id
     end
-
-    it "deleted the database from the database" do
-      expect{destroy_request}.to change { Campaign.count }.by(-1)
+    context "with user logged in" do
+      before { login(user) }
+      context "deleting own campaign" do
+        it "deleted the entry from the database" do
+          expect{destroy_request}.to change { Campaign.count }.by(-1)
+        end
+        it "redirect to the home page" do
+          expect(destroy_request).to redirect_to(root_path)
+        end
+        it "sets a flash message" do
+          destroy_request
+          expect(flash[:notice]).to be
+        end
+      end
+      context "deleting non-owned campaign" do
+        it "throws an error" do
+          expect { delete :destroy, id: campaign_1.id }.to raise_error
+        end
+      end
     end
-
-    it "redirect to the home page" do
-      expect(destroy_request).to redirect_to(root_path)
+    context "with user not logged in" do
+      it "redirects to login page" do
+        destroy_request
+        expect(response).to redirect_to(new_session_path)
+      end
     end
-
-    it "sets a flash message" do
-      destroy_request
-      expect(flash[:notice]).to be
-    end
-
   end
 
 end
