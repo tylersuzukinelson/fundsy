@@ -38,6 +38,10 @@ gem 'simple_form'
 gem 'slim-rails'
 gem 'quiet_assets'
 
+group :test do
+  gem 'simplecov', require: false
+end
+
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
