@@ -1,0 +1,12 @@
+h1
+  = @campaign.title
+p
+  = @campaign.description
+p
+  | Created By: #{@campaign.user_full_name}
+p
+  | Created On: #{formatted_date(@campaign.created_at)}
+- if can? :edit, @campaign
+  = link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info"
+- if can? :destroy, @campaign
+  = link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" }

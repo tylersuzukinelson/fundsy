@@ -37,6 +37,7 @@ gem 'valid_email'
 gem 'simple_form'
 gem 'slim-rails'
 gem 'quiet_assets'
+gem 'cancancan'
 
 group :test do
   gem 'simplecov', require: false
@@ -58,5 +59,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'launchy'
+  gem 'interactive_editor'
+  gem 'awesome_print'
+  gem 'hirb'
 end
 
