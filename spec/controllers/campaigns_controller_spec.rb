@@ -51,7 +51,7 @@ RSpec.describe CampaignsController, type: :controller do
         end
         it "sets flash message" do
           valid_request
-          expect(flash[:notice]).not_to be
+          expect(flash[:notice]).to be
         end
       end
       context "invalid request" do

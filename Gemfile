@@ -7,6 +7,7 @@ gem 'rails', '4.2.0'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+gem 'bootstrap-sass'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -33,6 +34,9 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'valid_email'
+gem 'simple_form'
+gem 'slim-rails'
+gem 'quiet_assets'
 
 group :development, :test do
   gem 'factory_girl_rails'
@@ -48,5 +52,7 @@ group :development, :test do
   gem 'spring'
 
   gem 'rspec-rails'
+  gem 'capybara'
+  gem 'launchy'
 end
 

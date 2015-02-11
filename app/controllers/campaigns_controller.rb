@@ -11,6 +11,7 @@ class CampaignsController < ApplicationController
     @campaign = Campaign.new permitted_params
     @campaign.user = current_user
     if @campaign.save
+      flash[:notice] = "Campaign created!"
       redirect_to @campaign
     else
       flash[:notice] = error_messages

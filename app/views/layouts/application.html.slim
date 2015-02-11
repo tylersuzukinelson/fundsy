@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Fund.sy Crowdfunding
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    .container
+      #menu.row
+        = link_to "Home", root_path
+      - if flash[:notice]
+        .alert.alert-success
+          = flash[:notice]
+      - elsif flash[:alert]
+        .alert.alert-danger
+          = flash[:alert]
+      #content.row
+        = yield
