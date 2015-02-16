@@ -1,12 +1,28 @@
-h1
-  = @campaign.title
-p
-  = @campaign.description
-p
-  | Created By: #{@campaign.user_full_name}
-p
-  | Created On: #{formatted_date(@campaign.created_at)}
-- if can? :edit, @campaign
-  = link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info"
-- if can? :destroy, @campaign
-  = link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" }
+.row
+  .col-sm-9.col-md-9
+    h1
+      = @campaign.title
+    p
+      = @campaign.description
+    p
+      | Created By: #{@campaign.user_full_name}
+    p
+      | Created On: #{formatted_date(@campaign.created_at)}
+    - if can? :edit, @campaign
+      = link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info"
+    - if can? :destroy, @campaign
+      = link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" }
+  .col-sm-3.col-sm-3
+    h2
+      | Reward Levels
+    - @campaign.reward_levels.each do |rl|
+      .well
+        h3
+          = rl.title
+        p
+          = number_to_currency(rl.amount)
+        p
+          | Quantity: 
+          = rl.quantity
+        p
+          = rl.body

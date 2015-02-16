@@ -3,4 +3,16 @@
   = f.input :description
   = f.input :goal
   = f.input :due_date
+  h2
+    | Reward Levels
+  = f.error :reward_levels
+  = f.simple_fields_for :reward_levels do |rl|
+    .row
+      .col-md-6
+        = rl.input :title
+        = rl.input :body
+      .col-md-6
+        = rl.input :amount
+        = rl.input :quantity
+      hr
   = f.submit "Submit"

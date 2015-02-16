@@ -5,6 +5,7 @@ class CampaignsController < ApplicationController
 
   def new
     @campaign = Campaign.new
+    3.times { @campaign.reward_levels.build }
   end
 
   def create
@@ -14,6 +15,7 @@ class CampaignsController < ApplicationController
       flash[:notice] = "Campaign created!"
       redirect_to @campaign
     else
+      3.times { @campaign.reward_levels.build }
       flash[:notice] = error_messages
       render :new
     end
@@ -46,7 +48,7 @@ class CampaignsController < ApplicationController
   private
 
   def permitted_params
-    params.require(:campaign).permit(:title, :description, :goal, :due_date)
+    params.require(:campaign).permit(:title, :description, :goal, :due_date, { reward_levels_attributes: [:id, :title, :amount, :quantity, :body] })
   end
 
   def error_messages
