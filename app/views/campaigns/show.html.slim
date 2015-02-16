@@ -5,6 +5,9 @@
     p
       = @campaign.description
     p
+      | Status: 
+      = @campaign.aasm_state.capitalize
+    p
       | Created By: #{@campaign.user_full_name}
     p
       | Created On: #{formatted_date(@campaign.created_at)}
@@ -12,6 +15,8 @@
       = link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info"
     - if can? :destroy, @campaign
       = link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" }
+    - if @campaign.draft? && (can? :publish, @campaign)
+      = link_to "Publish", campaign_publishings_path(@campaign), class: "btn btn-primary", method: :post, data: { confirm: "Are you sure you want to publish?" }
   .col-sm-3.col-sm-3
     h2
       | Reward Levels

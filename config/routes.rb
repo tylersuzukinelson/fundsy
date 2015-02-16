@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :campaigns
+  resources :campaigns do
+    resources :publishings, only: :create
+  end
   resources :users, only: [:new, :create]
   resources :sessions, only: [:new, :create] do
     delete :destroy, on: :collection # collection doesn't require id; member does

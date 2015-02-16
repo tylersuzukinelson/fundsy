@@ -38,6 +38,7 @@ gem 'simple_form'
 gem 'slim-rails'
 gem 'quiet_assets'
 gem 'cancancan'
+gem 'aasm', git: "git@github.com:aasm/aasm.git"
 
 group :test do
   gem 'simplecov', require: false
@@ -46,6 +47,7 @@ end
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'rails-erd'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

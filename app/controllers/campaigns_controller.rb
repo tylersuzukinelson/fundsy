@@ -15,6 +15,7 @@ class CampaignsController < ApplicationController
       flash[:notice] = "Campaign created!"
       redirect_to @campaign
     else
+      remaining = 3 - @campaign.reward_levels.count
       3.times { @campaign.reward_levels.build }
       flash[:notice] = error_messages
       render :new
@@ -25,10 +26,12 @@ class CampaignsController < ApplicationController
   end
 
   def index
-    @campaigns = Campaign.all
+    @campaigns = Campaign.published
   end
 
   def edit
+    remaining = 3 - @campaign.reward_levels.count
+    remaining.times { @campaign.reward_levels.build }
   end
 
   def update
