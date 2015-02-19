@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :nearby_campaigns, only: [:index]
+
   resources :campaigns do
     resources :publishings, only: :create
     resources :comments, only: :create
