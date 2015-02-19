@@ -17,6 +17,12 @@
       = link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" }
     - if @campaign.draft? && (can? :publish, @campaign)
       = link_to "Publish", campaign_publishings_path(@campaign), class: "btn btn-primary", method: :post, data: { confirm: "Are you sure you want to publish?" }
+    = simple_form_for [@campaign, (@comment || Comment.new)] do |f|
+      = f.input :body
+      = f.submit
+    - @campaign.comments.each do |comment|
+      .well
+        = comment.body
   .col-sm-3.col-sm-3
     h2
       | Reward Levels

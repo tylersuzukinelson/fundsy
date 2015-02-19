@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :campaigns do
     resources :publishings, only: :create
+    resources :comments, only: :create
   end
   resources :users, only: [:new, :create]
   resources :sessions, only: [:new, :create] do

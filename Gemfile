@@ -39,6 +39,7 @@ gem 'slim-rails'
 gem 'quiet_assets'
 gem 'cancancan'
 gem 'aasm', git: "git@github.com:aasm/aasm.git"
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 
 group :test do
   gem 'simplecov', require: false

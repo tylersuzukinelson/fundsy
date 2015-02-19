@@ -11,6 +11,8 @@ class Campaign < ActiveRecord::Base
       x[:body].blank? && 
       x[:quantity].blank?
     }
+
+  has_many :comments, as: :commentable, dependent: :destroy
   
   validates :title, presence: true, uniqueness: true
   validates :description, presence: true
