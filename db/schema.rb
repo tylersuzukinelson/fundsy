@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219180531) do
+ActiveRecord::Schema.define(version: 20150219220510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(version: 20150219180531) do
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
     t.string   "aasm_state"
+    t.string   "address"
+    t.float    "longitude"
+    t.float    "latitude"
   end
 
   add_index "campaigns", ["aasm_state"], name: "index_campaigns_on_aasm_state", using: :btree
@@ -39,6 +42,12 @@ ActiveRecord::Schema.define(version: 20150219180531) do
   end
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
+
+  create_table "discussions", force: :cascade do |t|
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "reward_levels", force: :cascade do |t|
     t.integer  "campaign_id"

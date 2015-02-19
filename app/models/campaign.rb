@@ -1,6 +1,9 @@
 class Campaign < ActiveRecord::Base
   include AASM
 
+  geocoded_by :address
+  after_validation :geocode
+
   belongs_to :user
 
   has_many :reward_levels, dependent: :destroy

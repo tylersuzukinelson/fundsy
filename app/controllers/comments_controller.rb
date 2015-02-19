@@ -19,6 +19,8 @@ class CommentsController < ApplicationController
   def find_campaign
     if params[:campaign_id]
       @commentable = @campaign = Campaign.find params[:campaign_id]
+    elsif params[:discussion_id]
+      @commentable = @discussion = Discussion.find params[:discussion_id]
     end
   end
 

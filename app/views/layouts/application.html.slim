@@ -10,6 +10,8 @@ html
       #menu.row
         = link_to "Home", root_path
         |  | 
+        = link_to "Forum", discussions_path
+        |  | 
         = link_to "New Campaign", new_campaign_path
         |  | 
         - if user_signed_in?
