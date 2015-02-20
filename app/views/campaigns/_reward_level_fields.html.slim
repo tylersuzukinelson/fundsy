@@ -5,4 +5,5 @@
   .col-md-6
     = f.input :amount
     = f.input :quantity
-  hr
+    span.pull-right
+      = link_to_remove_association "remove task", f, class: "btn btn-danger btn-sm"

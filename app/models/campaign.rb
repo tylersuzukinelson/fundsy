@@ -13,7 +13,7 @@ class Campaign < ActiveRecord::Base
       x[:title].blank? && 
       x[:body].blank? && 
       x[:quantity].blank?
-    }
+    }, allow_destroy: true
 
   has_many :comments, as: :commentable, dependent: :destroy
   

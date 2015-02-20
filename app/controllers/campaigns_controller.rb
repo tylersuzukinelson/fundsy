@@ -51,7 +51,7 @@ class CampaignsController < ApplicationController
   private
 
   def permitted_params
-    params.require(:campaign).permit(:title, :description, :goal, :due_date, { reward_levels_attributes: [:id, :title, :amount, :quantity, :body] })
+    params.require(:campaign).permit(:title, :description, :goal, :due_date, { reward_levels_attributes: [:id, :title, :amount, :quantity, :body, :_destroy] })
   end
 
   def error_messages
