@@ -43,6 +43,7 @@ gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'geocoder'
 gem 'gmaps4rails'
 gem 'underscore-rails'
+gem 'cocoon'
 
 group :test do
   gem 'simplecov', require: false
