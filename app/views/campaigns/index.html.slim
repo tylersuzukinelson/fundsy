@@ -1,14 +1,13 @@
 h1
   | Welcome to Fund.sy
-- cache "recent-campaigns", skip_digest: true, expire_in: 1.day do
-  #recent-campaigns
-    h2 Just Released
-    - @recent_campaigns.each do |campaign|
-      .col-sm-4.col-md-4
-        h3
-          = link_to campaign.title, campaign
-        p
-          = campaign.description
+#recent-campaigns
+  h2 Just Released
+  - @recent_campaigns.each do |campaign|
+    .col-sm-4.col-md-4
+      h3
+        = link_to campaign.title, campaign
+      p
+        = campaign.description
 #campaigns
   - @campaigns.each do |campaign|
     h2
