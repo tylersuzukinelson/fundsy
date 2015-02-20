@@ -12,6 +12,7 @@ class CampaignsController < ApplicationController
     @campaign = Campaign.new permitted_params
     @campaign.user = current_user
     if @campaign.save
+      expire_fragment "recent-campaigns"
       flash[:notice] = "Campaign created!"
       redirect_to @campaign
     else
@@ -27,6 +28,7 @@ class CampaignsController < ApplicationController
 
   def index
     @campaigns = Campaign.published
+    @recent_campaigns = Campaign.published.recent(3)
   end
 
   def edit
@@ -60,7 +62,7 @@ class CampaignsController < ApplicationController
 
   def find_campaign
     @campaign = Campaign.includes(:comments, :reward_levels).references(:comments, :reward_levels).find params[:id]
-    # @campaign = Campaign.find params[:id]
+    # @campaign = CampaignsControllermpaign.find params[:id]
   end
 
   def find_own_campaign

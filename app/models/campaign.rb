@@ -49,4 +49,9 @@ class Campaign < ActiveRecord::Base
       transitions from: :fund, to: :unfunded
     end
   end
+
+  def self.recent(count)
+    order(created_at: :desc).limit(count)
+  end
+
 end
