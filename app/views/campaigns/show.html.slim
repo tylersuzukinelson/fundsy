@@ -4,15 +4,17 @@
       = @campaign.title
     p
       = @campaign.description
-    p
+    p class="label #{@campaign.label_class}"
       | Status: 
       = @campaign.aasm_state.capitalize
     p
+      | Goal: 
+      = @campaign.goal
+    p
       | Created By: #{@campaign.user_full_name}
     p
-      | Created On: #{formatted_date(@campaign.created_at)}
-    - if can? :edit, @campaign
-      = link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info"
+      | Created On: #{@campaign.created_at}
+    = @campaign.edit_button
     - if can? :destroy, @campaign
       = link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" }
     - if @campaign.draft? && (can? :publish, @campaign)

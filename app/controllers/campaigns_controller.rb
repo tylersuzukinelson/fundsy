@@ -61,12 +61,12 @@ class CampaignsController < ApplicationController
   end
 
   def find_campaign
-    @campaign = Campaign.includes(:comments, :reward_levels).references(:comments, :reward_levels).find params[:id]
+    @campaign = Campaign.includes(:comments, :reward_levels).references(:comments, :reward_levels).find(params[:id]).decorate
     # @campaign = CampaignsControllermpaign.find params[:id]
   end
 
   def find_own_campaign
-    @campaign  = current_user.campaigns.find params[:id]
+    @campaign  = current_user.campaigns.find(params[:id]).decorate
   end
 
 end
