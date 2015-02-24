@@ -1,4 +1,4 @@
-class Api::V1::CampaignsController < ApplicationController
+class Api::V1::CampaignsController < Api::V1::BaseController
 
   def index
     @campaigns = Campaign.published
@@ -6,6 +6,10 @@ class Api::V1::CampaignsController < ApplicationController
 
   def show
     @campaign = Campaign.find params[:id]
+  end
+
+  def create
+    render json: {}
   end
 
 end

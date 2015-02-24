@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # scope includes it in the URL but not the controller path
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-      resources :campaigns, only: [:index, :show]
+      resources :campaigns, only: [:index, :show, :create]
     end
   end
   root "campaigns#index"
