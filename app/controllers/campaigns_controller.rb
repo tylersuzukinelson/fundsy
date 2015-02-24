@@ -24,6 +24,10 @@ class CampaignsController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @campaign }
+    end
   end
 
   def index

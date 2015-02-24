@@ -13,6 +13,13 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create] do
     delete :destroy, on: :collection # collection doesn't require id; member does
   end
+  # namespace includes it in the URL and controller path
+  # scope includes it in the URL but not the controller path
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      resources :campaigns, only: [:index, :show]
+    end
+  end
   root "campaigns#index"
   
   # The priority is based upon order of creation: first created -> highest priority.
