@@ -45,6 +45,7 @@ gem 'gmaps4rails'
 gem 'underscore-rails'
 gem 'cocoon'
 gem 'draper'
+gem 'virtus'
 
 group :test do
   gem 'simplecov', require: false

@@ -9,13 +9,13 @@ class CampaignsController < ApplicationController
   end
 
   def create
-    @campaign = Campaign.new permitted_params
-    @campaign.user = current_user
-    if @campaign.save
+    service = Campaigns::CreateCampaign.new(params: permitted_params, user: current_user)
+    if service.call
       expire_fragment "recent-campaigns"
       flash[:notice] = "Campaign created!"
-      redirect_to @campaign
+      redirect_to service.campaign
     else
+      @campaign = service.campaign
       remaining = 3 - @campaign.reward_levels.count
       3.times { @campaign.reward_levels.build }
       flash[:notice] = error_messages
