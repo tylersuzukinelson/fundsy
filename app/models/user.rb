@@ -17,7 +17,9 @@ class User < ActiveRecord::Base
   private
 
   def generate_api_key
-    self.api_key = SecureRandom.hex
+    begin
+      self.api_key = SecureRandom.hex
+    end while User.exists?(api_key: api_key)
   end
 
 end
