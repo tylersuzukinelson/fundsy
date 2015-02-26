@@ -1,0 +1,6 @@
+h1
+  | Pledge for 
+  = @reward_level.title
+= simple_form_for [@reward_level, @pledge], class: "form-horizontal" do |f|
+  = f.input :amount
+  = f.submit "Pledge Now!", class: "btn btn-default"

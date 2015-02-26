@@ -1,0 +1,10 @@
+h1
+  | Pay Now
+= simple_form_form "", class: "form-horizontal" do |f|
+  = f.input :card_number, as: :number
+  .form-group
+    = f.label :expiry_date
+    = select_month nil, { add_month_number: true }, { class: "form-control" }
+    = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 10 }, { class: "form-control" }
+  = f.input :cvc
+  = f.submit "Submit", class: "btn btn-default"

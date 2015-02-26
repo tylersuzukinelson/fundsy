@@ -13,6 +13,12 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create] do
     delete :destroy, on: :collection # collection doesn't require id; member does
   end
+  resources :reward_levels, only: [] do
+    resources :pledges, only: [:new, :create]
+  end
+  resources :pledges, only: [] do
+    resources :payments, only: [:new, :create]
+  end
   # namespace includes it in the URL and controller path
   # scope includes it in the URL but not the controller path
   namespace :api, defaults: {format: :json} do

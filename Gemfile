@@ -47,6 +47,7 @@ gem 'cocoon'
 gem 'draper'
 gem 'virtus'
 gem 'omniauth-twitter'
+gem 'stripe'
 
 group :test do
   gem 'simplecov', require: false

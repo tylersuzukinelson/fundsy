@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224185952) do
+ActiveRecord::Schema.define(version: 20150226180033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,19 @@ ActiveRecord::Schema.define(version: 20150224185952) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "pledges", force: :cascade do |t|
+    t.integer  "amount"
+    t.string   "stripe_txn_id"
+    t.string   "aasm_state"
+    t.integer  "user_id"
+    t.integer  "reward_level_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "pledges", ["reward_level_id"], name: "index_pledges_on_reward_level_id", using: :btree
+  add_index "pledges", ["user_id"], name: "index_pledges_on_user_id", using: :btree
+
   create_table "reward_levels", force: :cascade do |t|
     t.integer  "campaign_id"
     t.string   "title"
@@ -74,5 +87,7 @@ ActiveRecord::Schema.define(version: 20150224185952) do
   add_index "users", ["api_key"], name: "index_users_on_api_key", using: :btree
 
   add_foreign_key "campaigns", "users"
+  add_foreign_key "pledges", "reward_levels"
+  add_foreign_key "pledges", "users"
   add_foreign_key "reward_levels", "campaigns"
 end

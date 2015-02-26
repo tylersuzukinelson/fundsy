@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_secure_password
   has_many :campaigns, dependent: :destroy
 
+  has_many :pledges, dependent: :nullify
+
   validates :email, presence: true, uniqueness: true, email_format: true
 
   before_create :generate_api_key
