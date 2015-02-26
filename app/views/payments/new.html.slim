@@ -1,10 +1,17 @@
 h1
   | Pay Now
-= simple_form_form "", class: "form-horizontal" do |f|
-  = f.input :card_number, as: :number
+#stripe-errors
+
+= simple_form_for "", url: pledge_payments_path(@pledge), method: :post, html: { id: 'token-form', class: "form-horizontal" } do |f|
+  = f.input :stripe_token, as: :hidden
+
+= simple_form_for "", html: {id: "cc-form", class: "form-horizontal"} do |f|
+  = f.input :card_number
   .form-group
     = f.label :expiry_date
     = select_month nil, { add_month_number: true }, { class: "form-control" }
     = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 10 }, { class: "form-control" }
   = f.input :cvc
+  noscript
+    | Javascript must be enabled for this form to work. Your browser is really old!
   = f.submit "Submit", class: "btn btn-default"

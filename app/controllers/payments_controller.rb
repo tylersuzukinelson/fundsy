@@ -4,7 +4,10 @@ class PaymentsController < ApplicationController
   before_action :find_pledge
 
   def new
-    @pledge = Pledge.new
+  end
+
+  def create
+    render json: params
   end
 
   private
