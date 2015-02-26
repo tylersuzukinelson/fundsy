@@ -46,6 +46,7 @@ gem 'underscore-rails'
 gem 'cocoon'
 gem 'draper'
 gem 'virtus'
+gem 'omniauth-twitter'
 
 group :test do
   gem 'simplecov', require: false
