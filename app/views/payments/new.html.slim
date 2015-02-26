@@ -1,6 +1,7 @@
 h1
   | Pay Now
 #stripe-errors
+  = @error_message
 
 = simple_form_for "", url: pledge_payments_path(@pledge), method: :post, html: { id: 'token-form', class: "form-horizontal" } do |f|
   = f.input :stripe_token, as: :hidden

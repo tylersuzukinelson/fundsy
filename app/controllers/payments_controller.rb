@@ -7,7 +7,17 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    render json: params
+    service = Payment::CreateWithStripe.new(
+                user: current_user,
+                pledge: @pledge,
+                stripe_token: params[:stripe_token]
+              )
+    if service.call
+      redirect_to @pledge.campaign, notice: "Thanks for pledging"
+    else
+      @error_message = "Sorry! Something went wrong. Try again."
+      render :new
+    end
   end
 
   private

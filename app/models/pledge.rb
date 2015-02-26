@@ -3,6 +3,11 @@ class Pledge < ActiveRecord::Base
   belongs_to :user
   belongs_to :reward_level
 
+  delegate :campaign, to: :reward_level
+  # def campaign
+  #   reward_level.campaign
+  # end
+
   validates :amount, presence: true, numericality: { greater_than: 0 }
 
   aasm do
